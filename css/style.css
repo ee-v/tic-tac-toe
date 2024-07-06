@@ -1,0 +1,100 @@
+:root {
+    --white: #EBF0F9;
+    --black: #131313;
+    --gray: #bbbbbb;
+    --blue: #436ABC;
+    --times-icon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23ebf0f9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>');
+    --circle-icon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23ebf0f9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-circle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /></svg>');
+    --font-family: "Rubik", sans-serif;
+}
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 14px;
+    background-color: var(--white);
+}
+
+.container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.container__text {
+    text-align: center;
+    font-family: var(--font-family);
+    font-size: 1.85em;
+    font-weight: bold;
+    color: var(--black);
+    text-transform: uppercase;
+}
+
+.board {
+    width: 240px;
+    height: 240px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+    margin-top: 2.5em;
+    margin-bottom: 1.8em;
+}
+
+.board__box {
+    background-color: var(--blue);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.board__box:hover {
+    cursor: pointer;
+}
+
+.board__box[data-state="times"] {
+    background-image: var(--times-icon);
+}
+
+.board__box[data-state="circle"] {
+    background-image: var(--circle-icon);
+}
+
+.board__box--win {
+    background-color: var(--black);
+}
+
+.controls__btn {
+    display: inline-block;
+    padding: 1em 1.42em;
+    font-size: 1.14em;
+    color: var(--black);
+    text-transform: uppercase;
+    font-family: var(--font-family);
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: transparent;
+    border: 2px solid var(--black);
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.controls__btn:hover {
+    background-color: var(--black);
+    color: var(--white);
+    cursor: pointer;
+}
+
+.controls__btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
