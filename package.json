@@ -1,0 +1,21 @@
+{
+  "name": "tic-tac-toe",
+  "version": "1.0.0",
+  "description": "A simple Tic-Tac-Toe game built using HTML, CSS, and JavaScript.",
+  "main": "./js/main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ee-v/tic-tac-toe.git"
+  },
+  "keywords": [
+    "ecmascript",
+    "iife",
+    "bem"
+  ],
+  "author": "ee-v",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ee-v/tic-tac-toe/issues"
+  },
+  "homepage": "https://github.com/ee-v/tic-tac-toe#readme"
+}
