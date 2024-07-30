@@ -1,74 +1,66 @@
-'use strict';
-import { Board } from './board.js';
+import Board from './board.js';
 
 (() => {
-    const charPlayerOne = 'times';
-    const charPlayerTwo = 'circle';
+  const charPlayerOne = 'times';
+  const charPlayerTwo = 'circle';
 
-    let player = 1;
-    let moves = 0;
-    let isThereWinner = false;
+  let player = 1;
+  let moves = 0;
+  let isThereWinner = false;
 
-    const textPlayer = document.getElementById('textPlayer');
-    const board = document.getElementById('board');
-    const btnNewGame = document.getElementById('btnNewGame');
+  const textPlayer = document.getElementById('textPlayer');
+  const board = document.getElementById('board');
+  const btnNewGame = document.getElementById('btnNewGame');
 
-    const myBoard = new Board(board);
+  const myBoard = new Board(board);
 
-    myBoard.onBoxClick((box) => {
-        if (isThereWinner) { return; }
-        if (myBoard.getBoxState(box) !== '') { return; }
-        const charPlayer = getCharacterPlayer(player);
-        myBoard.setBoxState(box, charPlayer);
-        moves++;
-        if (moves >= 5) {
-            checkForWinner();
-            if (isThereWinner) {
-                setText(false, player, textPlayer);
-                return;
-            }
-        }
-        if (!isThereWinner && moves === 9) {
-            textPlayer.innerHTML='Sin ganador :(';
-            return;
-        }
-        changePlayer();
-        setText(true, player, textPlayer);
-    });
+  const changePlayer = () => {
+    player = player === 1 ? 2 : 1;
+  };
 
-    btnNewGame.addEventListener('click', () => {
-        reset();
-    });
+  const reset = () => {
+    player = 1;
+    moves = 0;
+    isThereWinner = false;
+    myBoard.cleanBoard();
+    textPlayer.innerText = `Es turno del jugador\n${player}`;
+  };
 
-    const setText = (isTurn, player, elem) => {
-        let text = isTurn ? 'Es turno del jugador\n' + player : 'El ganador es el jugador\n' + player;
-        elem.innerText = text;
-    };
+  const getCharacterPlayer = () => (player === 1 ? charPlayerOne : charPlayerTwo);
 
-    const changePlayer = () => {
-        player = player === 1 ? 2 : 1;
+  const checkForWinner = () => {
+    const charPlayer = getCharacterPlayer();
+    const rowsResult = myBoard.isRowsWinner(charPlayer);
+    const columnsResult = myBoard.isColumnsWinner(charPlayer);
+    const diagonalsResult = myBoard.isDiagonalsWinner(charPlayer);
+    const result = [rowsResult, columnsResult, diagonalsResult].some((r) => r === true);
+    isThereWinner = result;
+  };
+
+  myBoard.onBoxClick((box) => {
+    if (isThereWinner) { return; }
+    if (Board.getBoxState(box) !== '') { return; }
+    const charPlayer = getCharacterPlayer();
+    Board.setBoxState(box, charPlayer);
+    moves += 1;
+    if (moves >= 5) {
+      checkForWinner();
+      if (isThereWinner) {
+        textPlayer.innerText = `El ganador es el jugador\n${player}`;
+        return;
+      }
     }
-
-    const reset = () => {
-        player = 1;
-        moves = 0;
-        isThereWinner = false;
-        myBoard.cleanBoard();
-        setText(true, player, textPlayer)
-    };
-
-    const getCharacterPlayer = (player) => {
-        return player === 1 ? charPlayerOne : charPlayerTwo;
+    if (!isThereWinner && moves === 9) {
+      textPlayer.innerHTML = 'Sin ganador :(';
+      return;
     }
+    changePlayer();
+    textPlayer.innerText = `Es turno del jugador\n${player}`;
+  });
 
-    const checkForWinner = () => {
-        const charPlayer = getCharacterPlayer(player);
-        const rowsResult = myBoard.isRowsWinner(charPlayer);
-        const columnsResult = myBoard.isColumnsWinner(charPlayer);
-        const diagonalsResult = myBoard.isDiagonalsWinner(charPlayer);
-        const result = [rowsResult, columnsResult, diagonalsResult].some((r) => r === true);
-        isThereWinner = result;
-    };
-
+  btnNewGame.addEventListener('click', () => {
     reset();
+  });
+
+  reset();
 })();
