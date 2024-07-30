@@ -19,11 +19,8 @@
   },
   "homepage": "https://github.com/ee-v/tic-tac-toe#readme",
   "devDependencies": {
-    "@eslint/eslintrc": "^3.1.0",
-    "@eslint/js": "^9.8.0",
     "eslint": "^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.2",
-    "globals": "^15.8.0"
+    "eslint-plugin-import": "^2.25.2"
   }
 }
