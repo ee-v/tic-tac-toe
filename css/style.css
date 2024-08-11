@@ -70,6 +70,20 @@ body {
 
 .board__box--win {
     background-color: var(--black);
+    animation-name: flip;
+    animation-duration: 2s;
+    animation-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.27);
+    animation-iteration-count: 1;
+}
+
+@keyframes flip {
+    from {
+        transform: rotateY(0deg);
+    }
+
+    to {
+        transform: rotateY(180deg);
+    }
 }
 
 .controls__btn {

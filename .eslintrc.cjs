@@ -1,4 +1,5 @@
 module.exports = {
+    ignores: ["*.cjs", "*.md"],
     env: {
         browser: true,
         es2021: true
@@ -13,7 +14,7 @@ module.exports = {
     },
     rules: {
         "indent": ['error', 2],
-        "linebreak-style": ['error', 'unix'],
+        "linebreak-style": ['error', 'windows'],
         "quotes": ['error', 'single'],
         "semi": ['error', 'always'],
         'constructor-super': 'error',
