@@ -15,15 +15,16 @@ const setEventClick = (board, onClick) => {
   });
 };
 
-const setWinClassToBox = (box) => {
+const setWinClassToBox = (box, index) => {
   box.classList.add('board__box--win');
+  box.setAttribute('data-index', (index + 1));
 };
 
 const setDiagonalClass = (boxes, diagonalBoxes) => {
   boxes.forEach((row, rowIndex) => {
     row.forEach((box, columnIndex) => {
       if (diagonalBoxes.some(([r, c]) => r === rowIndex && c === columnIndex)) {
-        setWinClassToBox(box);
+        setWinClassToBox(box, rowIndex);
       }
     });
   });
@@ -56,7 +57,7 @@ export default class Board {
     return values.some((row, rowIndex) => {
       const isWinningRow = row.every((box) => box === player);
       if (isWinningRow) {
-        this.boxes[rowIndex].forEach((box) => setWinClassToBox(box));
+        this.boxes[rowIndex].forEach((box, index) => setWinClassToBox(box, index));
         return true;
       }
       return false;
@@ -68,7 +69,7 @@ export default class Board {
     for (let columnIndex = 0; columnIndex < 3; columnIndex += 1) {
       const isWinningColumn = values.every((row) => row[columnIndex] === player);
       if (isWinningColumn) {
-        this.boxes.forEach((row) => setWinClassToBox(row[columnIndex]));
+        this.boxes.forEach((row, index) => setWinClassToBox(row[columnIndex], index));
         return true;
       }
     }
@@ -114,6 +115,7 @@ export default class Board {
     this.boxes.forEach((row) => {
       row.forEach((box) => {
         Board.setBoxState(box, '');
+        box.setAttribute('data-index', '');
         box.classList.remove('board__box--win');
       });
     });

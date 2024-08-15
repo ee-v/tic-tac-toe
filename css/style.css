@@ -6,6 +6,9 @@
     --times-icon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23ebf0f9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>');
     --circle-icon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23ebf0f9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-circle"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /></svg>');
     --font-family: "Rubik", sans-serif;
+    --sliceTop-duration: 0.8s;
+    --flip-duration: 1.4s;
+    --animation-delay-step: 0.8s;
 }
 
 *,
@@ -70,10 +73,38 @@ body {
 
 .board__box--win {
     background-color: var(--black);
-    animation-name: flip;
-    animation-duration: 2s;
-    animation-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.27);
-    animation-iteration-count: 1;
+    animation-timing-function: ease, cubic-bezier(0.18, 0.89, 0.32, 1.27);
+    animation-iteration-count: 1, 1;
+}
+
+.board__box--win[data-index="1"] {
+    animation-name: sliceTop, flip;
+    animation-duration: var(--sliceTop-duration), var(--flip-duration);
+    animation-delay: 0s, calc(var(--animation-delay-step) * 3);
+}
+
+.board__box--win[data-index="2"] {
+    animation-name: sliceTop, flip;
+    animation-duration: var(--sliceTop-duration), var(--flip-duration);
+    animation-delay: var(--animation-delay-step), calc(var(--animation-delay-step) * 3);
+}
+
+.board__box--win[data-index="3"] {
+    animation-name: sliceTop, flip;
+    animation-duration: var(--sliceTop-duration), var(--flip-duration);
+    animation-delay: calc(var(--animation-delay-step) * 2), calc(var(--animation-delay-step) * 3);
+}
+
+@keyframes sliceTop {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 @keyframes flip {
