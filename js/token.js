@@ -1,3 +1,5 @@
+import { stateAttributeName, indexAttributeName, winClassName } from './constants.js';
+
 export default class Token {
     constructor(element) {
         this.domElement = element;
@@ -14,7 +16,7 @@ export default class Token {
 
     setState(value) {
         this.state = value;
-        this.domElement.setAttribute('data-state', value);
+        this.domElement.setAttribute(stateAttributeName, value);
     }
 
     setIndex(number) {
@@ -22,17 +24,17 @@ export default class Token {
             throw new Error("Invalid index value");
         }
         this.index = number;
-        this.domElement.setAttribute('data-index', number);
+        this.domElement.setAttribute(indexAttributeName, number);
     }
 
     setWin(index) {
-        this.domElement.classList.add('board__box--win');
+        this.domElement.classList.add(winClassName);
         this.setIndex(index);
     }
 
     reset() {
         this.setState(null);
         this.setIndex(0);
-        this.domElement.classList.remove('board__box--win');
+        this.domElement.classList.remove(winClassName);
     }
 }

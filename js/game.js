@@ -1,5 +1,4 @@
-const characterPlayerOne = 'times';
-const characterPlayerTwo = 'circle';
+import { characterPlayerOne, characterPlayerTwo } from './constants.js';
 
 const checkRowsWinner = (board, actualPlayer) => {
     return board.some((row, rowIndex) => {
