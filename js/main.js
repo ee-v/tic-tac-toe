@@ -13,13 +13,13 @@ import Game from './game.js';
     textPlayer.innerText = `Es turno del jugador\n${game.actualPlayer}`;
   }
 
-  myBoard.setBoxClickEvent((box) => {
+  myBoard.onBoxClick((box) => {
     if (game.isThereWinner) { return; }
     if (box.state !== null) { return; }
     box.state = game.actualPlayer;
     game.addMove();
     if (game.moves >= 5) {
-      game.checkWinner(myBoard.getBoard());
+      game.checkWinner(myBoard.board);
       if (game.isThereWinner) {
         textPlayer.innerText = `El ganador es el jugador\n${game.actualPlayer}`;
         return;

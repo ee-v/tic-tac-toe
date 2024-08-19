@@ -7,7 +7,7 @@ const createBox = () => {
 }
 
 const createBoxes = () => {
-  let boxes = [];
+  const boxes = [];
   for (let i = 1; i < 10; i++) {
     boxes.push(createBox());
   }
@@ -15,30 +15,32 @@ const createBoxes = () => {
 }
 
 const renderBoxes = (board, boxes) => {
-  for (let box of boxes) {
-    board.append(box.domElement);
-  }
+  boxes.forEach((box) => board.append(box.domElement));
 }
 
 export default class Board {
   constructor() {
-    this.board = document.getElementById('board');
-    this.boxes = createBoxes();
-    renderBoxes(board, this.boxes);
+    this._board = document.getElementById('board');
+    this._boxes = createBoxes();
+    renderBoxes(this._board, this._boxes);
   }
 
-  getBoard = () => {
+  get boxes() {
+    return this._boxes;
+  }
+
+  get board() {
     const board = [];
     for (let i = 0; i < 9; i += 3) {
       board.push(this.boxes.slice(i, i + 3));
     }
     return board;
-  };
+  }
 
-  setBoxClickEvent(customEvent) {
-    this.board.addEventListener('click', (event) => {
+  onBoxClick(customEvent) {
+    this._board.addEventListener('click', (event) => {
       const element = event.target;
-      const index = Array.prototype.indexOf.call(this.board.children, element);
+      const index = Array.from(this._board.children).indexOf(element);
       customEvent(this.boxes[index]);
     });
   }
@@ -48,5 +50,4 @@ export default class Board {
       box.reset();
     });
   }
-
 }
