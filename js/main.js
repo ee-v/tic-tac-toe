@@ -15,8 +15,8 @@ import Game from './game.js';
 
   myBoard.setBoxClickEvent((box) => {
     if (game.isThereWinner) { return; }
-    if (box.getState() !== null) { return; }
-    box.setState(game.actualPlayer);
+    if (box.state !== null) { return; }
+    box.state = game.actualPlayer;
     game.addMove();
     if (game.moves >= 5) {
       game.checkWinner(myBoard.getBoard());

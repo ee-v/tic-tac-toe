@@ -1,40 +1,50 @@
-import { stateAttributeName, indexAttributeName, winClassName } from './constants.js';
+import { stateAttributeName, indexAttributeName, winClassName, validStates } from './constants.js';
 
 export default class Token {
     constructor(element) {
-        this.domElement = element;
-        this.reset();
+        this._domElement = element;
+        this._state = null;
+        this._index = 0;
     }
 
-    getState() {
-        return this.state;
+    get domElement() {
+        return this._domElement;
     }
 
-    getIndex() {
-        return this.index;
+    get state() {
+        return this._state;
     }
 
-    setState(value) {
-        this.state = value;
-        this.domElement.setAttribute(stateAttributeName, value);
+    set state(value) {
+        if (!validStates.includes(value)) {
+            throw new TypeError("Invalid state value");
+        }
+        if (this._state === value) { return; }
+        this._state = value;
+        this._domElement.setAttribute(stateAttributeName, value);
     }
 
-    setIndex(number) {
+    get index() {
+        return this._index;
+    }
+
+    set index(number) {
         if (typeof number !== 'number') {
             throw new Error("Invalid index value");
         }
-        this.index = number;
-        this.domElement.setAttribute(indexAttributeName, number);
+        if (this._index === number) { return; }
+        this._index = number;
+        this._domElement.setAttribute(indexAttributeName, number);
     }
 
     setWin(index) {
-        this.domElement.classList.add(winClassName);
-        this.setIndex(index);
+        this.index = index;
+        this._domElement.classList.add(winClassName);
     }
 
     reset() {
-        this.setState(null);
-        this.setIndex(0);
-        this.domElement.classList.remove(winClassName);
+        this.state = null;
+        this.index = 0;
+        this._domElement.classList.remove(winClassName);
     }
 }
