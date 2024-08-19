@@ -1,4 +1,4 @@
-class Token {
+export default class Token {
     constructor(element) {
         this.domElement = element;
         this.reset();
@@ -13,28 +13,26 @@ class Token {
     }
 
     setState(value) {
-        if (value !== 'X' && value !== 'O' && value !== null) {
-            throw new Error("Invalid state value");
-        }
         this.state = value;
         this.domElement.setAttribute('data-state', value);
     }
 
     setIndex(number) {
-        if (typeof number !== 'number' || number < 0) {
+        if (typeof number !== 'number') {
             throw new Error("Invalid index value");
         }
         this.index = number;
         this.domElement.setAttribute('data-index', number);
     }
 
-    setWin() {
+    setWin(index) {
         this.domElement.classList.add('board__box--win');
+        this.setIndex(index);
     }
 
     reset() {
         this.setState(null);
-        this.setIndex(null);
+        this.setIndex(0);
         this.domElement.classList.remove('board__box--win');
     }
 }
