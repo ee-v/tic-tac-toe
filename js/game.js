@@ -22,45 +22,40 @@ const checkColumnsWinner = (board, actualPlayer) => {
     return false;
 }
 
-const setDiagonalClass = (boxes, diagonalBoxes) => {
-    boxes.forEach((row, rowIndex) => {
+const setDiagonalWin = (board, winningBoxes) => {
+    board.forEach((row, rowIndex) => {
         row.forEach((box, columnIndex) => {
-            if (diagonalBoxes.some(([r, c]) => r === rowIndex && c === columnIndex)) {
+            const isWinningBox = winningBoxes.some(([winningRowIndex, winningColumnIndex]) => winningRowIndex === rowIndex && winningColumnIndex === columnIndex);
+            if (isWinningBox) {
                 box.setWin(rowIndex + 1);
             }
         });
     });
 };
 
-const checkDiagonalWinner = (board, actualPlayer) => {
-    const diagonalLeftBoxes = [];
-    const diagonalRightBoxes = [];
-
-    const isWinningDiagonalLeft = board.every((row, index) => {
-        const columnIndex = index;
+const getDiagonalWinningBoxes = (board, actualPlayer, getColumnIndex) => {
+    const winningBoxes = []
+    const isWinningDiagonal = board.every((row, index) => {
+        const columnIndex = getColumnIndex(index);
         if (row[columnIndex].state === actualPlayer) {
-            diagonalLeftBoxes.push([index, columnIndex]);
+            winningBoxes.push([index, columnIndex]);
             return true;
         }
         return false;
     });
+    return { winningBoxes, isWinningDiagonal };
+}
+
+const checkDiagonalsWinner = (board, actualPlayer) => {
+    const leftWinning = getDiagonalWinningBoxes(board, actualPlayer, (index) => index);
 
     const lastIndex = board.length - 1;
-    const isWinningDiagonalRight = board.every((row, index) => {
-        const columnIndex = lastIndex - index;
-        if (row[columnIndex].state === actualPlayer) {
-            diagonalRightBoxes.push([index, columnIndex]);
-            return true;
-        }
-        return false;
-    });
+    const rightWinning = getDiagonalWinningBoxes(board, actualPlayer, (index) => lastIndex - index);
 
-    if (isWinningDiagonalLeft) {
-        setDiagonalClass(board, diagonalLeftBoxes);
-        return true;
-    }
-    if (isWinningDiagonalRight) {
-        setDiagonalClass(board, diagonalRightBoxes);
+    const diagonalsResult = [leftWinning, rightWinning];
+    const winningDiagonal = diagonalsResult.find((result) => result.isWinningDiagonal);
+    if (winningDiagonal) {
+        setDiagonalWin(board, winningDiagonal.winningBoxes);
         return true;
     }
     return false;
@@ -68,29 +63,41 @@ const checkDiagonalWinner = (board, actualPlayer) => {
 
 export default class Game {
     constructor() {
-        this.moves = 0;
-        this.actualPlayer = characterPlayerOne;
-        this.isThereWinner = false;
+        this._moves = 0;
+        this._actualPlayer = characterPlayerOne;
+        this._isThereWinner = false;
+    }
+
+    get moves() {
+        return this._moves;
+    }
+
+    get actualPlayer() {
+        return this._actualPlayer;
+    }
+
+    get isThereWinner() {
+        return this._isThereWinner;
     }
 
     addMove() {
-        this.moves += 1;
+        this._moves += 1;
     }
 
     switchTurn() {
-        this.actualPlayer = this.actualPlayer === characterPlayerOne ? characterPlayerTwo : characterPlayerOne;
+        this._actualPlayer = this.actualPlayer === characterPlayerOne ? characterPlayerTwo : characterPlayerOne;
     }
 
     checkWinner(board) {
         const rowsResult = checkRowsWinner(board, this.actualPlayer);
         const columnsResult = checkColumnsWinner(board, this.actualPlayer);
-        const diagonalsResult = checkDiagonalWinner(board, this.actualPlayer);
-        this.isThereWinner = [rowsResult, columnsResult, diagonalsResult].some((result) => result === true);
+        const diagonalsResult = checkDiagonalsWinner(board, this.actualPlayer);
+        this._isThereWinner = rowsResult || columnsResult || diagonalsResult;
     }
 
     reset() {
-        this.moves = 0;
-        this.actualPlayer = characterPlayerOne;
-        this.isThereWinner = false;
+        this._moves = 0;
+        this._actualPlayer = characterPlayerOne;
+        this._isThereWinner = false;
     }
 }
